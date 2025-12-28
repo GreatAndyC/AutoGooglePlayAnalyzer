@@ -42,16 +42,23 @@ class ReviewAnalyzer:
         reviews_text = "\n".join([f"- [{r['score']} stars] {r['content']}" for r in reviews_batch])
         
         prompt = f"""
-        You are a product expert. Analyze the following app reviews:
+        [Role]: Data Scientist / HCI Researcher
+        [Task]: Perform a high-granularity technical audit on {len(reviews_batch)} user reviews for Instagram.
         
+        [Input Data]:
         {reviews_text}
         
-        Provide a concise summary of:
-        1. Top 3 Keywords/Themes
-        2. Primary User Pain Points
-        3. Feature Requests (if any)
+        [Analysis Framework]: For EACH review, identify the following 5 dimensions:
+        1. **Usage (用途)**: Specific use case (e.g., Content Creation, Ad Management, Social Interaction).
+        2. **Persona (画像)**: Who is this user? (e.g., Professional Creator, General User, Tech Developer, Business Owner).
+        3. **Pros (优点)**: Concrete technical or UX strengths.
+        4. **Cons (缺点)**: Specific bugs, latencies, UI failures, or algorithmic biases.
+        5. **Needs (需求)**: Explicit or latent user requirements (e.g., better API, improved upload quality).
         
-        Format the output clearly as a short list.
+        [Constraint]: 
+        - If a dimension is missing, mark as "Unknown". 
+        - Be objective and technical. 
+        - Provide a aggregated summary of these 5 dimensions for this batch.
         """
         
         try:
@@ -72,17 +79,31 @@ class ReviewAnalyzer:
         combined_summaries = "\n\n---\n\n".join(intermediate_summaries)
         
         prompt = f"""
-        You are a Senior Product Strategist. Below are summarized insights from thousands of user reviews across multiple batches:
+        [Objective]: Synthesize Batch Summaries into a formal Research Paper Section (Chapter 3.2: User Needs and Market Feedback).
         
+        [Source Summaries]:
         {combined_summaries}
         
-        Based on this data, generate a Hardcore Product Analysis Report including:
-        1. Executive Summary: What is the overall sentiment and market position?
-        2. Critical Issues: What are the deal-breaking bugs or UX failures?
-        3. Strategic Recommendations: What 3 things should the product team do IMMEDIATELY to improve NPS?
-        4. Competitive Edge: What do users love that should be doubled down on?
+        [Required Output Structure]:
+        # 3.2 User Requirement Analysis
         
-        Format the report in professional Markdown.
+        ## 3.2.1 Core Usage Patterns (用途分析)
+        - Categorize findings into technical domains (e.g., Content Creation, Connectivity, Privacy).
+        - Provide **Primary Conclusions** and **Secondary Conclusions**.
+        
+        ## 3.2.2 User Personas (用户画像)
+        - Detail the distribution of professional vs. general users.
+        - Analyze the research significance of the dominant groups.
+        
+        ## 3.2.3 Pros & Cons Synthesis (优缺点总结)
+        - **Pros**: Focus on system strengths and user experience highlights.
+        - **Cons**: Categorize into "Systemic Failures", "HCI Issues", and "Performance Bottlenecks".
+        
+        ## 3.2.4 Future Technical Requirements (用户需求)
+        - Strategic optimization directions for the engineering team.
+        - Link these needs to potential PhD-level research questions (e.g., scalability, data integrity).
+        
+        [Tone]: Academic, rigorous, data-driven. Avoid fluff.
         """
         
         try:
@@ -96,7 +117,7 @@ class ReviewAnalyzer:
             logger.error(f"Error in final report generation: {e}")
             return "Failed to generate final report."
 
-    def run_analysis(self, app_id: str, total_to_analyze: int = 1000, batch_size: int = 50):
+    def run_analysis(self, app_id: str, total_to_analyze: int = 1000, batch_size: int = 200):
         """
         Full analysis pipeline: Batch Fetch -> Map -> Reduce.
         """
