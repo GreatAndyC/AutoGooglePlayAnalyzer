@@ -59,6 +59,7 @@ class ReviewAnalyzer:
         - If a dimension is missing, mark as "Unknown". 
         - Be objective and technical. 
         - Provide a aggregated summary of these 5 dimensions for this batch.
+        说中文
         """
         
         try:
@@ -104,6 +105,7 @@ class ReviewAnalyzer:
         - Link these needs to potential PhD-level research questions (e.g., scalability, data integrity).
         
         [Tone]: Academic, rigorous, data-driven. Avoid fluff.
+        说中文
         """
         
         try:
