@@ -23,6 +23,7 @@ logs/
 *.log
 # 忽略所有生成的 Markdown 报告（除了 README）
 reports/
+exports/
 product_analysis_*.md
 
 # 6. 系统文件
