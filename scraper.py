@@ -12,14 +12,26 @@ class GooglePlayScraper:
     """
     Scraper class to fetch reviews from Google Play Store efficiently.
     Supports pagination via continuation_token to fetch large datasets.
+    
+    Country Reference (Common abbreviations):
+    - us: United States
+    - gb: United Kingdom
+    - ca: Canada
+    - au: Australia
+    - de: Germany
+    - fr: France
+    - jp: Japan
+    - kr: South Korea
+    - in: India
+    - br: Brazil
     """
 
-    def __init__(self, app_id: str, lang: str = 'en', country: str = 'us'):
+    def __init__(self, app_id: str, lang: str = None, country: str = None):
         self.app_id = app_id
-        self.lang = lang
-        self.country = country
+        self.lang = lang or Config.LANGUAGE
+        self.country = country or Config.COUNTRY
 
-    def fetch_reviews(self, target_count: int = 10000, batch_size: int = 100) -> List[Dict]:
+    def fetch_reviews(self, target_count: int = None, batch_size: int = 200) -> List[Dict]:
         """
         Fetches a target number of reviews using pagination.
         
@@ -30,10 +42,11 @@ class GooglePlayScraper:
         Returns:
             List[Dict]: List of review dictionaries.
         """
+        target_count = target_count or Config.SCRAPE_COUNT
         all_reviews = []
         continuation_token = None
         
-        logger.info(f"Starting to fetch {target_count} reviews for App ID: {self.app_id}")
+        logger.info(f"Starting to fetch {target_count} reviews for App ID: {self.app_id} [Country: {self.country}, Lang: {self.lang}]")
         
         try:
             while len(all_reviews) < target_count:

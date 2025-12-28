@@ -18,6 +18,17 @@ class Config:
     # App configuration
     APP_ID = os.getenv("APP_ID", "com.zhiliaoapp.musically")
 
+    # Scraper configuration
+    SCRAPE_COUNT = int(os.getenv("SCRAPE_COUNT", "1000"))
+    COUNTRY = os.getenv("COUNTRY", "us")
+    LANGUAGE = os.getenv("LANGUAGE", "en")
+
+    # Analysis scope
+    TOTAL_TO_ANALYZE = int(os.getenv("TOTAL_TO_ANALYZE") or "1000")
+    BATCH_SIZE = int(os.getenv("BATCH_SIZE") or "50")
+    START_DATE = os.getenv("START_DATE") or "2000-01-01"
+    END_DATE = os.getenv("END_DATE") or "2099-12-31"
+
     # OpenAI configuration
     OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
     OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4o-mini")

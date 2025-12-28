@@ -14,10 +14,11 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-def run_pipeline(target_count: int = 10000):
+def run_pipeline(target_count: int = None):
     """
     Main pipeline to scrape Google Play reviews and save them to PostgreSQL.
     """
+    target_count = target_count or Config.SCRAPE_COUNT
     logger.info("--- Starting AutoGooglePlayAnalyzer Pipeline ---")
     
     # 1. Initialize Database
@@ -52,6 +53,5 @@ def run_pipeline(target_count: int = 10000):
         logger.info("--- Pipeline Execution Finished ---")
 
 if __name__ == "__main__":
-    # You can adjust the target_count here. 
-    # Starting with 1000 for a solid initial run, change to 10000 for full scale.
-    run_pipeline(target_count=1000)
+    # Uses SCRAPE_COUNT from Config by default
+    run_pipeline()
