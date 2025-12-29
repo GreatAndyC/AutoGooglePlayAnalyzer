@@ -66,11 +66,16 @@ def export_reviews_to_json():
                 os.makedirs(export_dir)
                 logger.info(f"Created directory: {export_dir}")
 
-            output_filename = os.path.join(export_dir, "vesync_raw_audit_data.json")
-            with open(output_filename, "w", encoding="utf-8") as f:
+            # Dynamic filename: raw_data_{app_id}_{timestamp}.json
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            safe_app_id = Config.APP_ID.replace('.', '_')
+            filename = f"raw_data_{safe_app_id}_{timestamp}.json"
+            
+            output_path = os.path.join(export_dir, filename)
+            with open(output_path, "w", encoding="utf-8") as f:
                 json.dump(result, f, ensure_ascii=False, indent=2)
             
-            logger.info(f"Successfully exported {len(export_data)} reviews to {output_filename}")
+            logger.info(f"Successfully exported {len(export_data)} reviews to {output_path}")
             
     except Exception as e:
         logger.error(f"Failed to export reviews: {e}")
