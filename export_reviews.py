@@ -2,8 +2,8 @@ import json
 import os
 import logging
 from datetime import datetime
-from config import Config
-from database import DatabaseManager
+from src.config import Config
+from src.database import DatabaseManager
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')

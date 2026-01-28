@@ -1,7 +1,7 @@
 import logging
-from config import Config
-from database import DatabaseManager
-from scraper import GooglePlayScraper
+from src.config import Config
+from src.database import DatabaseManager
+from src.scraper import GooglePlayScraper
 
 # Configure logging
 logging.basicConfig(

@@ -2,7 +2,7 @@ import time
 import logging
 from typing import List, Dict, Optional, Tuple
 from google_play_scraper import reviews, Sort
-from config import Config
+from .config import Config
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
