@@ -1,15 +1,16 @@
 # AutoGooglePlayAnalyzer 🚀
+
 > 专业的 Google Play 评论自动化采集与智能审计系统
+
 <div align="center">
-  <!-- Placeholder for a logo if you have one, currently using a generic header style -->
   <h3>您的 APP 舆情分析智能中台</h3>
   <p>不仅仅是数据采集，更是将海量用户反馈转化为商业洞察的终极解决方案。</p>
   
   <p>
-    <img src="https://img.shields.io/badge/Version-1.0.0-blue?style=flat-square" alt="Version">
+    <img src="https://img.shields.io/badge/Version-1.1.0-blue?style=flat-square" alt="Version">
     <img src="https://img.shields.io/badge/Language-Python-3776AB?style=flat-square" alt="Python">
     <img src="https://img.shields.io/badge/Database-PostgreSQL-336791?style=flat-square" alt="PostgreSQL">
-    <img src="https://img.shields.io/badge/AI-OpenAI%20GPT--4o-412991?style=flat-square" alt="OpenAI">
+    <img src="https://img.shields.io/badge/AI-DeepSeek%20V3-00D4AA?style=flat-square" alt="DeepSeek">
     <img src="https://img.shields.io/badge/License-MIT-lightgrey?style=flat-square" alt="License">
   </p>
 
@@ -27,53 +28,68 @@
 
 通过本应用，您可以将数万条非结构化的用户评论转化为结构化的商业审计报告，消除数据噪音，直击用户痛点。
 
-## 🌟 深度功能解析 (Detailed Features)
+## ✨ 新功能：Web Dashboard
 
-### 1. 🕷️ 高性能数据采集 (Smart Crawler)
-*   **全量抓取**: 支持递归分页抓取，轻松处理 10,000+ 级别的评论数据量。
-*   **智能去重**: 基于数据库唯一约束的增量更新机制，确保数据永不重复，且不会覆盖历史记录。
-*   **多维度元数据**: 采集内容涵盖评论正文、评分、时间、用户名称、点赞数等关键指标。
+**v1.1.0** 新增可视化 Web 控制台，无需命令行即可完成全部操作！
 
-### 2. 💾 企业级数据持久化 (Persistence Layer)
-*   **PostgreSQL 驱动**: 采用工业级关系型数据库，通过连接池 (Connection Pooling) 技术保障高并发写入的稳定性。
-*   **增量更新**: 自动识别新评论，仅对增量数据进行入库，极大提升二次运行的效率。
+```bash
+python app.py
+```
 
-### 3. 🧠 AI 驱动的 Map-Reduce 分析引擎 (Map-Reduce Engine)
-*   **原子化标注 (Map)**: 并发调用 LLM 对每条评论进行多维度打标（用户画像、使用场景、核心痛点、功能缺陷）。
-*   **全局洞察归纳 (Reduce)**: 自动汇总成千上万条标注数据，生成麦肯锡风格的 **深度商业审计报告**。
-*   **多模态输出**: 支持生成标准 Markdown 报告以及**自动转换为 PDF**，方便团队传阅。
+启动后浏览器自动打开，支持：
+- 🎛️ **可视化配置** - App ID、国家、语言一键设置
+- 📊 **实时进度** - 抓取和分析过程实时显示
+- 📝 **报告预览** - 支持 Markdown 和 PDF 双格式查看
+- 💾 **数据导出** - 一键导出 JSON 数据
 
-## 🏗️ 系统架构 (Architecture)
+## 🌟 深度功能解析
+
+### 1. 🕷️ 高性能数据采集
+*   **全量抓取**: 支持递归分页抓取，轻松处理 10,000+ 级别的评论数据量
+*   **智能去重**: 基于数据库唯一约束的增量更新机制，确保数据永不重复
+*   **多维度元数据**: 采集内容涵盖评论正文、评分、时间、用户名称、点赞数等关键指标
+
+### 2. 💾 企业级数据持久化
+*   **PostgreSQL 驱动**: 采用工业级关系型数据库，通过连接池技术保障高并发写入稳定性
+*   **增量更新**: 自动识别新评论，仅对增量数据进行入库
+
+### 3. 🧠 AI 驱动的 Map-Reduce 分析引擎
+*   **原子化标注 (Map)**: 并发调用 LLM 对每条评论进行多维度打标（用户画像、使用场景、核心痛点）
+*   **全局洞察归纳 (Reduce)**: 自动汇总成千上万条标注数据，生成麦肯锡风格的深度商业审计报告
+*   **多模态输出**: 支持 Markdown 报告及 PDF 自动转换
+
+## 🏗️ 系统架构
 
 ```mermaid
 graph TD
     Source[Google Play Store] -->|Scraper| RawData[Raw Reviews]
     RawData -->|Data Pipeline| DB[(PostgreSQL)]
     DB -->|Batch Fetch| Analyzer[AI Analyzer Engine]
-    Analyzer -->|Map: Embed & Tag| LLM[Deepseek V2]
-    LLM -->|Reduce: Synthesize| Report[Audit Report (MD/PDF)]
+    Analyzer -->|Map: Embed & Tag| LLM[DeepSeek V3]
+    LLM -->|Reduce: Synthesize| Report[产品分析报告 MD/PDF]
     DB -->|Export| JSON[JSON Archives]
 ```
 
-## 📁 项目结构 (Project Structure)
+## 📁 项目结构
 
 ```text
 /
+├── app.py              <-- [NEW] Web Dashboard 入口
 ├── src/                <-- [Core] 核心代码包
 │   ├── config.py       # 配置管理
 │   ├── database.py     # 数据库连接池
 │   ├── scraper.py      # 爬虫逻辑
 │   └── analyzer.py     # 分析逻辑
-├── main.py             <-- [Entry] 抓取入口
-├── analyzer.py         <-- [Entry] 分析入口
-├── export_reviews.py   <-- [Entry] 导出入口
+├── main.py             <-- [CLI] 抓取入口
+├── analyzer.py         <-- [CLI] 分析入口
+├── export_reviews.py   <-- [CLI] 导出入口
 ├── convert_report.py   <-- [Tool] PDF 转换工具
 ├── requirements.txt    <-- 依赖列表
 ├── reports/            <-- 产出报告
 └── exports/            <-- 产出数据
 ```
 
-## ⚙️ 环境配置 (Setup)
+## ⚙️ 环境配置
 
 ### 1. 基础环境
 确保您已安装 Python 3.9+ 和 PostgreSQL。
@@ -99,50 +115,70 @@ APP_ID=com.example.app  # 目标 App 包名
 COUNTRY=us              # 商店区域
 LANGUAGE=en             # 评论语言
 
-# 分析配置
-OPENAI_API_KEY=sk-...   # OpenAI API Key
-OPENAI_MODEL=gpt-4o     # 建议使用 GPT-4o 以获得最佳分析效果
+# AI 分析配置 (推荐 DeepSeek，性价比高)
+OPENAI_API_KEY=sk-...          # DeepSeek API Key
+OPENAI_MODEL=deepseek-chat     # 模型名称
+OPENAI_API_BASE=https://api.deepseek.com  # API 地址
+
+# 采集分析配置
 SCRAPE_COUNT=1000       # 单次抓取数量
-TOTAL_TO_ANALYZE=1000   # 分析样本数量
+TOTAL_TO_ANALYZE=500    # 分析样本数量
 ```
 
-## 🚀 快速接入 (Quick Start)
+## 🚀 快速接入
 
-### 第一步：全量抓取 (Ingestion)
-从 Google Play 抓取最新评论并自动入库。
+### 方式一：Web Dashboard（推荐）
+
+```bash
+python app.py
+```
+
+浏览器自动打开控制台，可视化完成所有操作。
+
+### 方式二：命令行
+
+**第一步：全量抓取**
 ```bash
 python main.py
 ```
-> **提示**: 初次运行会自动初始化数据库表结构。日志 `pipeline.log` 会实时显示抓取进度。
 
-### 第二步：深度审计 (Analysis)
-调用 AI 引擎，生成商业洞察报告。
+**第二步：深度审计**
 ```bash
 python analyzer.py
 ```
-*   **产出**: `reports/` 目录下生成 `audit_xxx.md`。
-*   **AI 思考**: 引擎会自动识别用户画像、高频场景及潜在 Bug。
+产出：`reports/产品分析报告_xxx.md`
 
-### 第三步：结果交付 (Delivery)
-将 Markdown 报告自动转换为 PDF，或导出原始数据。
-
-**生成 PDF 报告**:
+**第三步：结果交付**
 ```bash
-python convert_report.py
+python convert_report.py  # 生成 PDF
+python export_reviews.py  # 导出 JSON
 ```
 
-**导出原始 JSON**:
-```bash
-python export_reviews.py
-```
+## 💡 批次配置建议
 
-## 📝 开发者与社区
+基于 DeepSeek-V3 的 128K 上下文和 4K 输出限制：
 
-*   **版本演进**:
-    *   **v1.0.0 (2026-01-28)**:
-        *   **[核心重构]**: 完成了项目的模块化重构，引入 `src/` 包结构。
-        *   **[新增功能]**: 增加了 PDF 报告自动生成工具 (`convert_report.py`)。
-        *   **[体验优化]**: 提供了详细的 `USER_GUIDE` 并整合至 README。
+| 分析条数 | 推荐批次数 | 每批条数 |
+|---------|-----------|---------|
+| 200     | 5-10      | 20-40   |
+| 500     | 10-15     | 35-50   |
+| 1000    | 20-30     | 35-50   |
+
+> ⚠️ 每批超过 50 条可能导致输出截断，建议每批 ≤40 条
+
+## 📝 版本演进
+
+- **v1.1.0 (2026-01-28)**:
+  - **[新增]** Web Dashboard 可视化控制台
+  - **[新增]** 实时抓取/分析进度显示
+  - **[新增]** PDF 在线预览功能
+  - **[优化]** 默认 AI 改为 DeepSeek (性价比更高)
+  - **[优化]** 报告增加元信息头部 (日期、样本数等)
+  - **[修复]** 端口占用自动处理
+
+- **v1.0.0 (2026-01-28)**:
+  - 完成项目模块化重构
+  - 增加 PDF 报告自动生成工具
 
 ---
 

@@ -1,5 +1,6 @@
 # 1. 绝对不能上传的私密信息
 .env
+.dashboard_config.json
 
 # 2. 虚拟环境
 venv/
@@ -15,16 +16,18 @@ __pycache__/
 # 4. 数据库和本地数据文件
 *.db
 *.sqlite3
-# 如果你有本地导出的 csv，也可以忽略
 *.csv
 
-# 5. 分析报告和日志
+# 5. 分析报告和日志（运行时产生）
 logs/
 *.log
-# 忽略所有生成的 Markdown 报告（除了 README）
 reports/
 exports/
-product_analysis_*.md
 
 # 6. 系统文件
 .DS_Store
+
+# 7. IDE 配置
+.idea/
+.vscode/
+*.swp
