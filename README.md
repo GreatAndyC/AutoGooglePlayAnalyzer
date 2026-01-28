@@ -50,7 +50,7 @@ graph TD
     Source[Google Play Store] -->|Scraper| RawData[Raw Reviews]
     RawData -->|Data Pipeline| DB[(PostgreSQL)]
     DB -->|Batch Fetch| Analyzer[AI Analyzer Engine]
-    Analyzer -->|Map: Embed & Tag| LLM[OpenAI GPT-4o]
+    Analyzer -->|Map: Embed & Tag| LLM[Deepseek V2]
     LLM -->|Reduce: Synthesize| Report[Audit Report (MD/PDF)]
     DB -->|Export| JSON[JSON Archives]
 ```
