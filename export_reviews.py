@@ -29,7 +29,7 @@ def export_reviews_to_json():
                     at, 
                     user_name AS "userName" 
                 FROM google_play_reviews 
-                WHERE app_id = 'com.etekcity.vesyncplatform'
+                WHERE app_id = '{Config.APP_ID}'
                 ORDER BY at DESC 
                 LIMIT {limit}
             """
