@@ -273,7 +273,7 @@ HTML_TEMPLATE = """
                     <div class="alert alert-info py-2 mb-3" id="batchInfoCard">
                         <i class="bi bi-info-circle"></i> 
                         <strong>每批处理:</strong> <span id="perBatchCount">-</span> 条 | 
-                        <strong>推荐:</strong> 基于 DeepSeek-V3 (128K 上下文), 建议每批 ≤200 条。当前配置 <span id="batchStatus" class="badge bg-success">合适</span>
+                        <strong>推荐:</strong> 基于 DeepSeek-V3 (4K 输出限制), 建议每批 ≤50 条。当前配置 <span id="batchStatus" class="badge bg-success">合适</span>
                     </div>
                     
                     
@@ -379,10 +379,10 @@ HTML_TEMPLATE = """
             document.getElementById('perBatchCount').textContent = perBatch;
             
             let statusEl = document.getElementById('batchStatus');
-            if (perBatch <= 200) {
+            if (perBatch <= 50) {
                 statusEl.className = 'badge bg-success';
                 statusEl.textContent = '✓ 合适';
-            } else if (perBatch <= 300) {
+            } else if (perBatch <= 80) {
                 statusEl.className = 'badge bg-warning text-dark';
                 statusEl.textContent = '⚠ 偏多';
             } else {
