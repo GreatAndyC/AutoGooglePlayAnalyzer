@@ -143,6 +143,7 @@ class DatabaseManager:
         """
         if cls._connection_pool:
             cls._connection_pool.closeall()
+            cls._connection_pool = None  # Reset so it can be re-initialized
             logger.info("Database connection pool closed.")
 
 if __name__ == "__main__":
