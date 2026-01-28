@@ -257,14 +257,35 @@ class ReviewAnalyzer:
             os.makedirs("reports")
         
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        filename = f"reports/audit_{Config.APP_ID.replace('.', '_')}_{timestamp}.md"
+        date_str = datetime.now().strftime("%Y年%m月%d日 %H:%M")
+        filename = f"reports/产品分析报告_{Config.APP_ID.replace('.', '_')}_{timestamp}.md"
+        
+        # Add report header with metadata
+        report_header = f"""# 产品分析报告
+
+---
+
+| 项目 | 内容 |
+|------|------|
+| **应用 ID** | `{Config.APP_ID}` |
+| **分析日期** | {date_str} |
+| **样本数量** | {len(reviews)} 条评论 |
+| **分析周期** | {Config.START_DATE} 至 {Config.END_DATE} |
+| **Batch Size** | {Config.BATCH_SIZE} 条/批 |
+| **AI 模型** | {Config.OPENAI_MODEL} |
+
+---
+
+"""
         
         with open(filename, "w", encoding="utf-8") as f:
-            f.write(final_report)
+            f.write(report_header + final_report)
             
         logger.info(f"Audit Complete! Report saved: {filename}")
-        print("\n" + "★"*30 + "\nAUDIT REPORT SUMMARY\n" + "★"*30)
+        print(f"\n报告已保存: {filename}")
+        print("\\n" + "★"*30 + "\\nAUDIT REPORT SUMMARY\\n" + "★"*30)
         print(final_report[:800] + "...")
+
 
 async def main():
     analyzer = ReviewAnalyzer()
