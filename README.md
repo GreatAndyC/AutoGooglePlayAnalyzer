@@ -74,9 +74,14 @@ graph TD
 
 ```text
 /
-├── app.py              <-- [NEW] Web Dashboard 入口
+├── app.py              <-- [Entry] Web Dashboard 入口
+├── web/                <-- [Web] Flask 应用模块
+│   ├── routes.py       # API 路由
+│   ├── config.py       # Web配置
+│   ├── templates/      # HTML 模板
+│   └── static/         # CSS/JS 资源
 ├── src/                <-- [Core] 核心代码包
-│   ├── config.py       # 配置管理
+│   ├── config.py       # 核心配置
 │   ├── database.py     # 数据库连接池
 │   ├── scraper.py      # 爬虫逻辑
 │   └── analyzer.py     # 分析逻辑

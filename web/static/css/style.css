@@ -1,0 +1,17 @@
+body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; }
+.dashboard-card { background: rgba(255,255,255,0.95); border-radius: 16px; box-shadow: 0 8px 32px rgba(0,0,0,0.1); }
+.btn-action { padding: 12px 24px; font-size: 1.1em; border-radius: 12px; }
+.log-box { background: #1a1a2e; color: #0f0; font-family: 'Courier New', monospace; font-size: 13px; border-radius: 8px; padding: 16px; min-height: 250px; max-height: 400px; overflow-y: auto; white-space: pre-wrap; word-break: break-all; }
+.status-badge { font-size: 0.9em; padding: 6px 12px; border-radius: 20px; }
+.nav-pills .nav-link.active { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+.report-content { max-height: 600px; overflow-y: auto; background: #f8f9fa; padding: 20px; border-radius: 8px; }
+.config-input { border-radius: 8px; }
+.path-display { background: #e9ecef; padding: 8px 12px; border-radius: 6px; font-family: monospace; font-size: 12px; word-break: break-all; cursor: pointer; }
+.path-display:hover { background: #dee2e6; }
+.progress-container { margin-top: 15px; }
+.progress { height: 28px; border-radius: 14px; background: #e9ecef; overflow: hidden; }
+.progress-bar { background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); font-weight: bold; font-size: 14px; line-height: 28px; }
+.slider-combo { display: flex; align-items: center; gap: 10px; }
+.slider-combo input[type="range"] { flex: 1; }
+.slider-combo input[type="number"] { width: 90px; text-align: center; font-weight: bold; border-radius: 8px; }
+.slider-label { font-size: 0.85em; color: #6c757d; }
