@@ -1,6 +1,7 @@
 # 1. 绝对不能上传的私密信息
 .env
 .dashboard_config.json
+RESUME_TIPS.md
 
 # 2. 虚拟环境
 venv/
