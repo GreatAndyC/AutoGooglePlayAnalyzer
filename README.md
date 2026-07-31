@@ -1,190 +1,169 @@
-# AutoGooglePlayAnalyzer 🚀
-
-> 专业的 Google Play 评论自动化采集与智能审计系统
-
 <div align="center">
-  <h3>您的 APP 舆情分析智能中台</h3>
-  <p>不仅仅是数据采集，更是将海量用户反馈转化为商业洞察的终极解决方案。</p>
-  
-  <p>
-    <img src="https://img.shields.io/badge/Version-1.1.0-blue?style=flat-square" alt="Version">
-    <img src="https://img.shields.io/badge/Language-Python-3776AB?style=flat-square" alt="Python">
-    <img src="https://img.shields.io/badge/Database-PostgreSQL-336791?style=flat-square" alt="PostgreSQL">
-    <img src="https://img.shields.io/badge/AI-DeepSeek%20V3-00D4AA?style=flat-square" alt="DeepSeek">
-    <img src="https://img.shields.io/badge/License-MIT-lightgrey?style=flat-square" alt="License">
-  </p>
 
-  <p>
-    <a href="#-核心功能">核心功能</a> • 
-    <a href="#-系统架构">系统架构</a> • 
-    <a href="#-安装指南">安装指南</a> • 
-    <a href="#-快速接入">快速接入</a>
-  </p>
+# AutoGooglePlayAnalyzer
+
+**Collect Google Play reviews, store them in PostgreSQL, and turn them into structured AI-assisted product research.**
+
+面向产品经理和数据分析场景的本地评论采集与分析原型，提供 Web Dashboard 和 CLI 两种入口。
+
+![Python](https://img.shields.io/badge/Python-3.9%2B-3776AB)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-required-336791)
+![Stage](https://img.shields.io/badge/stage-local%20prototype-f59e0b)
+![License](https://img.shields.io/badge/license-MIT-22c55e)
+
 </div>
 
----
+<p align="center">
+  <img src="https://caoyueyang.org/images/work/autogoogleplay/dashboard-chatgpt.jpg" alt="AutoGooglePlayAnalyzer dashboard and report workflow" width="840">
+</p>
 
-**AutoGooglePlayAnalyzer** 是一个为数据分析师和产品经理设计的全流程自动化工具。它将高并发爬虫、数据库持久化存储与大模型深度分析完美结合，为您提供一个稳定、极速且洞察深刻的 **本地舆情分析引擎**。
+> [!IMPORTANT]
+> 这是可运行的本地原型，不是生产服务。仓库目前没有自动化测试和 CI；规模、速度和报告质量应以你自己的目标 App、地区、评论数量与模型配置实测为准。
 
-通过本应用，您可以将数万条非结构化的用户评论转化为结构化的商业审计报告，消除数据噪音，直击用户痛点。
+## What It Does
 
-## ✨ 新功能：Web Dashboard
+AutoGooglePlayAnalyzer 把评论研究拆成一条可重复的本地流水线：
 
-**v1.1.0** 新增可视化 Web 控制台，无需命令行即可完成全部操作！
+1. 按 App ID、国家或地区和语言采集 Google Play 评论；
+2. 将评论与评分、时间、用户名和点赞数写入 PostgreSQL；
+3. 使用 OpenAI-compatible API 对评论进行分批标注与汇总；
+4. 生成 Markdown / PDF 报告，并可导出原始 JSON。
 
-```bash
-python app.py
-```
+当前 Dashboard 支持配置采集参数、查看实时进度、预览报告和导出数据。CLI 入口适合脚本化运行。
 
-启动后浏览器自动打开，支持：
-- 🎛️ **可视化配置** - App ID、国家、语言一键设置
-- 📊 **实时进度** - 抓取和分析过程实时显示
-- 📝 **报告预览** - 支持 Markdown 和 PDF 双格式查看
-- 💾 **数据导出** - 一键导出 JSON 数据
-
-## 🌟 深度功能解析
-
-### 1. 🕷️ 高性能数据采集
-*   **全量抓取**: 支持递归分页抓取，轻松处理 10,000+ 级别的评论数据量
-*   **智能去重**: 基于数据库唯一约束的增量更新机制，确保数据永不重复
-*   **多维度元数据**: 采集内容涵盖评论正文、评分、时间、用户名称、点赞数等关键指标
-
-### 2. 💾 企业级数据持久化
-*   **PostgreSQL 驱动**: 采用工业级关系型数据库，通过连接池技术保障高并发写入稳定性
-*   **增量更新**: 自动识别新评论，仅对增量数据进行入库
-
-### 3. 🧠 AI 驱动的 Map-Reduce 分析引擎
-*   **原子化标注 (Map)**: 并发调用 LLM 对每条评论进行多维度打标（用户画像、使用场景、核心痛点）
-*   **全局洞察归纳 (Reduce)**: 自动汇总成千上万条标注数据，生成麦肯锡风格的深度商业审计报告
-*   **多模态输出**: 支持 Markdown 报告及 PDF 自动转换
-
-## 🏗️ 系统架构
+## Architecture
 
 ```mermaid
-graph TD
-    Source[Google Play Store] -->|Scraper| RawData[Raw Reviews]
-    RawData -->|Data Pipeline| DB[(PostgreSQL)]
-    DB -->|Batch Fetch| Analyzer[AI Analyzer Engine]
-    Analyzer -->|Map: Embed & Tag| LLM[DeepSeek V3]
-    LLM -->|Reduce: Synthesize| Report[产品分析报告 MD/PDF]
-    DB -->|Export| JSON[JSON Archives]
+flowchart LR
+    PLAY["Google Play"] --> SCRAPER["Review Scraper"]
+    SCRAPER --> DB[("PostgreSQL")]
+    DB --> ANALYZER["Batch Analyzer"]
+    ANALYZER --> LLM["OpenAI-compatible LLM"]
+    LLM --> REPORT["Markdown / PDF Report"]
+    DB --> EXPORT["JSON Export"]
+    WEB["Local Web Dashboard"] --> SCRAPER
+    WEB --> ANALYZER
 ```
 
-## 📁 项目结构
+| 入口 | 文件 | 用途 |
+|---|---|---|
+| Web | `app.py` | 启动本地 Dashboard |
+| CLI | `main.py` | 采集评论 |
+| CLI | `analyzer.py` | 运行 AI 分析 |
+| CLI | `convert_report.py` | 将 Markdown 报告转换为 PDF |
+| CLI | `export_reviews.py` | 导出数据库评论 |
 
-```text
-/
-├── app.py              <-- [Entry] Web Dashboard 入口
-├── web/                <-- [Web] Flask 应用模块
-│   ├── routes.py       # API 路由
-│   ├── config.py       # Web配置
-│   ├── templates/      # HTML 模板
-│   └── static/         # CSS/JS 资源
-├── src/                <-- [Core] 核心代码包
-│   ├── config.py       # 核心配置
-│   ├── database.py     # 数据库连接池
-│   ├── scraper.py      # 爬虫逻辑
-│   └── analyzer.py     # 分析逻辑
-├── main.py             <-- [CLI] 抓取入口
-├── analyzer.py         <-- [CLI] 分析入口
-├── export_reviews.py   <-- [CLI] 导出入口
-├── convert_report.py   <-- [Tool] PDF 转换工具
-├── requirements.txt    <-- 依赖列表
-├── reports/            <-- 产出报告
-└── exports/            <-- 产出数据
-```
+## Prerequisites
 
-## ⚙️ 环境配置
+- Python 3.9 或更高版本；
+- 可访问的 PostgreSQL 实例和已创建的目标数据库；
+- 运行 AI 分析时需要兼容 OpenAI API 的服务与密钥；
+- 目标 App 必须能从所选 Google Play 区域访问。
 
-### 1. 基础环境
-确保您已安装 Python 3.9+ 和 PostgreSQL。
+## Quick Start
 
-### 2. 依赖安装
+### 1. 创建 Python 环境
+
 ```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-### 3. 环境变量 (.env)
-在项目根目录创建 `.env` 文件：
+当前 `requirements.txt` 尚未声明 Web Dashboard 使用的 Flask。运行 Dashboard 前还需要：
 
-```env
-# 数据库配置
+```bash
+python -m pip install Flask
+```
+
+这是一项已知依赖缺口；后续应在依赖清单中固定后再视为完全可复现安装。
+
+### 2. 配置环境
+
+在仓库根目录创建 `.env`：
+
+```dotenv
 DB_NAME=google_play_analysis
 DB_USER=postgres
 DB_PASSWORD=your_password
 DB_HOST=localhost
 DB_PORT=5432
 
-# 目标应用配置
-APP_ID=com.example.app  # 目标 App 包名
-COUNTRY=us              # 商店区域
-LANGUAGE=en             # 评论语言
+APP_ID=com.example.app
+COUNTRY=us
+LANGUAGE=en
 
-# AI 分析配置 (推荐 DeepSeek，性价比高)
-OPENAI_API_KEY=sk-...          # DeepSeek API Key
-OPENAI_MODEL=deepseek-chat     # 模型名称
-OPENAI_API_BASE=https://api.deepseek.com  # API 地址
+OPENAI_API_KEY=your_api_key
+OPENAI_MODEL=deepseek-chat
+OPENAI_API_BASE=https://api.deepseek.com
 
-# 采集分析配置
-SCRAPE_COUNT=1000       # 单次抓取数量
-TOTAL_TO_ANALYZE=500    # 分析样本数量
+SCRAPE_COUNT=1000
+TOTAL_TO_ANALYZE=500
 ```
 
-## 🚀 快速接入
+不要提交真实数据库密码或 API Key。
 
-### 方式一：Web Dashboard（推荐）
+### 3. 启动 Dashboard
+
+> [!WARNING]
+> `app.py` 当前会在启动前查找并强制终止占用 `5001` 端口的本机进程。运行前请确认该端口没有承载其他重要服务；这是现有实现行为，不应作为生产级端口管理方案。
 
 ```bash
 python app.py
 ```
 
-浏览器自动打开控制台，可视化完成所有操作。
+浏览器会打开 <http://127.0.0.1:5001>。
 
-### 方式二：命令行
+### 4. 使用 CLI
 
-**第一步：全量抓取**
 ```bash
 python main.py
-```
-
-**第二步：深度审计**
-```bash
 python analyzer.py
-```
-产出：`reports/产品分析报告_xxx.md`
-
-**第三步：结果交付**
-```bash
-python convert_report.py  # 生成 PDF
-python export_reviews.py  # 导出 JSON
+python convert_report.py
+python export_reviews.py
 ```
 
-## 💡 批次配置建议
+默认输出目录：
 
-基于 DeepSeek-V3 的 128K 上下文和 4K 输出限制：
+- `reports/`：Markdown 与 PDF 报告；
+- `exports/`：JSON 数据。
 
-| 分析条数 | 推荐批次数 | 每批条数 |
-|---------|-----------|---------|
-| 200     | 5-10      | 20-40   |
-| 500     | 15-20     | 25-35   |
-| 1000    | 25-40     | 25-40   |
+## Configuration Notes
 
-> ⚠️ 每批超过 50 条可能导致输出截断，建议每批 ≤40 条
+- `SCRAPE_COUNT` 控制单次目标采集量，实际返回数量取决于 Google Play；
+- `TOTAL_TO_ANALYZE` 控制进入 AI 分析的样本量；
+- 分批大小和模型上下文限制会影响成本、耗时与报告完整度；
+- 不同语言和国家或地区的数据不应在缺少说明时直接混合比较。
 
-## 📝 版本演进
+## Data and Safety
 
-- **v1.1.0 (2026-01-28)**:
-  - **[新增]** Web Dashboard 可视化控制台
-  - **[新增]** 实时抓取/分析进度显示
-  - **[新增]** PDF 在线预览功能
-  - **[优化]** 默认 AI 改为 DeepSeek (性价比更高)
-  - **[优化]** 报告增加元信息头部 (日期、样本数等)
-  - **[修复]** 端口占用自动处理
+- 评论正文和公开用户名会写入本地 PostgreSQL，请根据用途设置保存期限和访问权限；
+- AI 分析会把选中的评论内容发送给配置的第三方模型服务；
+- `.env`、报告和导出结果可能包含敏感业务信息，不应公开提交；
+- Google Play 页面和非官方抓取依赖可能发生变化，采集结果需要抽样核验。
 
-- **v1.0.0 (2026-01-28)**:
-  - 完成项目模块化重构
-  - 增加 PDF 报告自动生成工具
+## Project Structure
 
----
+```text
+app.py                  Web Dashboard 入口
+web/                    Flask 路由、模板与前端资源
+src/scraper.py          评论采集
+src/database.py         PostgreSQL 访问
+src/analyzer.py         批处理与 AI 分析
+main.py                 CLI 采集入口
+analyzer.py             CLI 分析入口
+convert_report.py       PDF 转换
+export_reviews.py       JSON 导出
+```
 
-Copyright © 2026 AutoGooglePlayAnalyzer Team
+## Known Limitations
+
+- Flask 尚未写入 `requirements.txt`；
+- 当前没有自动化测试或 GitHub Actions；
+- Dashboard 固定使用 `5001` 端口并带有强制清理行为；
+- README 不提供未经基准测试支持的性能或分析质量承诺。
+
+## License
+
+代码采用 [MIT License](LICENSE)。
